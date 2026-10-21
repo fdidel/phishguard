@@ -1,0 +1,21 @@
+Requirement already satisfied: pip in c:\users\pa-na\appdata\local\programs\python\python39\lib\site-packages (22.0.4)
+Collecting pip
+  Using cached pip-26.0.1-py3-none-any.whl (1.8 MB)
+Requirement already satisfied: setuptools in c:\users\pa-na\appdata\local\programs\python\python39\lib\site-packages (58.1.0)
+Collecting setuptools
+  Using cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)
+Collecting wheel
+  Downloading wheel-0.48.0-py3-none-any.whl (33 kB)
+Collecting packaging>=24.0
+  Downloading packaging-26.3-py3-none-any.whl (129 kB)
+     ------------------------------------ 130.0/130.0 KB 382.5 kB/s eta 0:00:00
+Installing collected packages: setuptools, pip, packaging, wheel
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 58.1.0
+    Uninstalling setuptools-58.1.0:
+      Successfully uninstalled setuptools-58.1.0
+  Attempting uninstall: pip
+    Found existing installation: pip 22.0.4
+    Uninstalling pip-22.0.4:
+      Successfully uninstalled pip-22.0.4
+Successfully installed packaging-26.3 pip-26.0.1 setuptools-82.0.1 wheel-0.48.0

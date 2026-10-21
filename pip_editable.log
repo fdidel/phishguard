@@ -1,0 +1,17 @@
+Obtaining file:///C:/Users/pa-na/Desktop/phishing-detection-system
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: phishguard
+  Building editable for phishguard (pyproject.toml): started
+  Building editable for phishguard (pyproject.toml): finished with status 'done'
+  Created wheel for phishguard: filename=phishguard-1.0.0-0.editable-py3-none-any.whl size=3687 sha256=53860be4faf910953815802e5d9535c36cf9203b8deb0c796e862f4a965e5aba
+  Stored in directory: C:\Users\pa-na\AppData\Local\Temp\pip-ephem-wheel-cache-wm7e8pt3\wheels\fa\12\a4\07496591ad9f963e521c22c91f6806f8d0cddd56f4fbf59fce
+Successfully built phishguard
+Installing collected packages: phishguard
+Successfully installed phishguard-1.0.0

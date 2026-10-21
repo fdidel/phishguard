@@ -1,0 +1,1 @@
+SQLAlchemy engine, session factory and dependency provider. The database URL is read from the `DATABASE_URL` environment variable (defaulting to a local SQLite file). `init_db()` creates all tables defined in `backend.app.models` so the service can start without running Alembic migrations first. For production deployments prefer Alembic migrations (see `backend/alembic/`).

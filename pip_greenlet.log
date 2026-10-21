@@ -1,0 +1,5 @@
+Collecting greenlet==3.0.3
+  Downloading greenlet-3.0.3-cp39-cp39-win_amd64.whl.metadata (3.9 kB)
+Downloading greenlet-3.0.3-cp39-cp39-win_amd64.whl (290 kB)
+Installing collected packages: greenlet
+Successfully installed greenlet-3.0.3

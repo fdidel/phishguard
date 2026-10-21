@@ -1,0 +1,27 @@
+[train] === 1/8 loading dataset ===
+[preprocessing] using cached cleaned dataset at ml\data\processed\cleaned_urls.csv
+[train] === 2/8 splitting (group-aware by registrable domain) ===
+[preprocessing] split sizes: {'train': 202813, 'validation': 67750, 'test': 67795} (group-aware by registrable domain, seed=42, max class-rate deviation=0.0033)
+[preprocessing]   train       phishing=100,719 (49.66%) legitimate=102,094 (50.34%)
+[preprocessing]   validation  phishing= 33,683 (49.72%) legitimate= 34,067 (50.28%)
+[preprocessing]   test        phishing= 33,956 (50.09%) legitimate= 33,839 (49.91%)
+[train] === 3/8 comparing candidate models (cross-validated) ===
+[train] comparison stage uses 50,000 of 202,813 training rows (cap=50,000)
+[train]   Logistic Regression    cv_f1=0.9012+-0.0018 val_acc=0.9073 val_f1=0.9083 val_auc=0.9714 (1.09s)
+[train]   Decision Tree          cv_f1=0.9101+-0.0006 val_acc=0.9150 val_f1=0.9148 val_auc=0.9695 (2.44s)
+[train]   Random Forest          cv_f1=0.9279+-0.0009 val_acc=0.9299 val_f1=0.9300 val_auc=0.9825 (18.49s)
+[train]   SVM                    cv_f1=0.9279+-0.0004 val_acc=0.9319 val_f1=0.9322 val_auc=0.9829 (112.91s)
+[train]   XGBoost                cv_f1=0.9329+-0.0007 val_acc=0.9364 val_f1=0.9364 val_auc=0.9864 (6.37s)
+[train] model comparison written to ml\reports\model_comparison.csv
+[train] === 4/8 selected candidate: XGBoost ===
+[train] === 5/8 refitting XGBoost on the FULL training partition ===
+[train] === 6/8 selecting thresholds on the validation partition ===
+[train] thresholds: suspicious>=0.625 dangerous>=0.895 (validation FPR 0.0499)
+[train] === 7/8 final evaluation on the untouched test partition ===
+[train] TEST acc=0.9374 prec=0.9473 rec=0.9267 f1=0.9369 auc=0.9872
+[train] === 8/8 extracting importance and persisting artifacts ===
+[train] model artifact written to ml\artifacts\phishguard_model.joblib (2901.9 KiB)
+[train] metrics written to ml\artifacts\model_metrics.json
+[train] evaluation report written to ml\reports\evaluation_report.json
+[train] evaluation plots written to ml\reports
+[train] done in 224.9s
