@@ -86,10 +86,47 @@ def get_db() -> Iterator[Session]:
         db.close()
 
 
+def alembic_manages_schema() -> bool:
+    """Return ``True`` when the database was migrated with Alembic.
+
+    Alembic keeps its bookkeeping in the ``alembic_version`` table.  The table
+    alone is not enough evidence: read-only Alembic commands such as
+    ``alembic current`` create an *empty* version table, and a database in
+    that state still has no application tables.  The schema is therefore only
+    considered Alembic-managed when the table exists **and** contains at least
+    one stamped revision.
+    """
+    from sqlalchemy import inspect, text
+
+    try:
+        inspector = inspect(engine)
+        if "alembic_version" not in inspector.get_table_names():
+            return False
+        with engine.connect() as connection:
+            rows = connection.execute(text("SELECT version_num FROM alembic_version")).fetchall()
+        return bool(rows)
+    except Exception as exc:  # pragma: no cover - inspection must never crash start-up
+        logger.warning("Could not inspect the database for Alembic metadata: %s", exc)
+        return False
+
+
 def init_db() -> None:
-    """Create every table registered on :class:`Base`."""
+    """Create every table registered on :class:`Base`.
+
+    This is the zero-configuration path used by the test-suite and by local
+    development.  When the database is already managed by Alembic the call is a
+    no-op, so the application can start after ``alembic upgrade head`` without
+    any additional step.
+    """
     # Importing the models registers them on the declarative metadata.
     import backend.app.models  # noqa: F401
+
+    if alembic_manages_schema():
+        logger.info(
+            "Database schema is managed by Alembic - skipping create_all (%s)",
+            settings.database_url,
+        )
+        return
 
     Base.metadata.create_all(bind=engine)
     logger.info("Database initialised at %s", settings.database_url)
