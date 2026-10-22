@@ -19,7 +19,7 @@ router = APIRouter(prefix="/api/v1/model", tags=["model"])
 
 #: Path to the saved training-run metrics JSON.
 _METRICS_PATH = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abpath(__file__))),
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "..",
     "..",
     "ml",

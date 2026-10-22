@@ -12,12 +12,15 @@ from backend.app.database.base import get_db
 from backend.app.models.scan import Classification, Scan, ScanStatus
 from backend.app.schemas.scan import (
     ErrorResponse,
+    Explanation,
+    Indicator,
     PaginatedScans,
     ScanDetail,
     ScanRequest,
     ScanResult,
     ScanSummary,
 )
+from backend.app.services.risk_scoring import CATEGORY_GUIDANCE, CATEGORY_LABELS
 from backend.app.services.scanner import perform_scan
 
 router = APIRouter(prefix="/api/v1/scans", tags=["scans"])
@@ -33,6 +36,11 @@ VALID_CLASSIFICATIONS = {
     Classification.INCONCLUSIVE,
     Classification.UNKNOWN,
 }
+
+#: Display labels reused when rebuilding a stored scan.
+_LABELS = dict(CATEGORY_LABELS)
+#: Guidance text reused when rebuilding a stored scan.
+_GUIDANCE = dict(CATEGORY_GUIDANCE)
 
 
 @router.post(
@@ -107,7 +115,22 @@ async def list_scans(
     for cond in conditions:
         stmt = stmt.where(cond)
     rows = db.execute(stmt).scalars().all()
-    items = [ScanSummary.model_validate(row) for row in rows]
+    items = [
+        ScanSummary(
+            scan_id=row.id,
+            submitted_url=row.submitted_url,
+            normalized_url=row.normalized_url,
+            hostname=row.hostname,
+            status=row.status,
+            classification=row.classification,
+            risk_score=row.risk_score,
+            phishing_probability=row.phishing_probability,
+            model_version=row.model_version,
+            scanned_at=row.created_at,
+            duration_ms=row.duration_ms,
+        )
+        for row in rows
+    ]
 
     pages = (total + page_size - 1) // page_size
     return PaginatedScans(
@@ -137,4 +160,42 @@ async def get_scan(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Scan '{scan_id}' not found.",
         )
-    return ScanDetail.model_validate(record)
+    return _to_detail(record)
+
+
+def _to_detail(record: Scan) -> ScanDetail:
+    """Map a persisted scan row onto the detail schema.
+
+    The ORM model and the API schema deliberately use different attribute
+    names (``id`` vs ``scan_id``, ``created_at`` vs ``scanned_at``), so the
+    mapping is written out explicitly rather than relying on
+    ``model_validate``.
+    """
+    raw_indicators = record.indicators or {}
+    evidence = raw_indicators.get("evidence", []) if isinstance(raw_indicators, dict) else []
+    raw_explanation = raw_indicators.get("explanation") if isinstance(raw_indicators, dict) else None
+
+    return ScanDetail(
+        scan_id=record.id,
+        submitted_url=record.submitted_url,
+        normalized_url=record.normalized_url,
+        hostname=record.hostname,
+        registrable_domain=record.registrable_domain,
+        status=record.status,
+        classification=record.classification,
+        classification_label=_LABELS.get(record.classification, record.classification.title()),
+        guidance=_GUIDANCE.get(record.classification, ""),
+        analysis_coverage=record.analysis_coverage,
+        risk_score=record.risk_score,
+        phishing_probability=record.phishing_probability,
+        model_version=record.model_version,
+        feature_schema_version=record.feature_schema_version,
+        scanned_at=record.created_at,
+        duration_ms=record.duration_ms,
+        indicators=[Indicator(**item) for item in evidence],
+        explanation=Explanation(**raw_explanation) if isinstance(raw_explanation, dict) else None,
+        warnings=list(record.warnings or []),
+        features=record.features,
+        error_code=record.error_code,
+        error_message=record.error_message,
+    )

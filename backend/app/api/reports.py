@@ -19,9 +19,31 @@ router = APIRouter(prefix="/api/v1/reports", tags=["reports"])
 
 
 def _summary_rows(db: Session) -> List[Dict[str, Any]]:
-    """Fetch every scan row (already bounded by the retention policy)."""
+    """Fetch every scan row (already bounded by the retention policy).
+
+    ``Session.execute(select(Scan))`` returns ORM rows whose single mapping key
+    is the entity name, so the entities are unwrapped with ``.scalars()`` and
+    the plain attribute values are projected explicitly.
+    """
     stmt = select(Scan).order_by(Scan.created_at.desc())
-    return [dict(row._mapping) for row in db.execute(stmt).mappings().all()]
+    scans = db.execute(stmt).scalars().all()
+    return [
+        {
+            "id": scan.id,
+            "created_at": scan.created_at,
+            "submitted_url": scan.submitted_url,
+            "normalized_url": scan.normalized_url,
+            "hostname": scan.hostname,
+            "registrable_domain": scan.registrable_domain,
+            "status": scan.status,
+            "classification": scan.classification,
+            "phishing_probability": scan.phishing_probability,
+            "risk_score": scan.risk_score,
+            "model_version": scan.model_version,
+            "duration_ms": scan.duration_ms,
+        }
+        for scan in scans
+    ]
 
 
 @router.get("/summary", response_model=ReportSummaryResponse)

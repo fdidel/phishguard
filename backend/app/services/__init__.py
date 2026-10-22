@@ -1,1 +1,1 @@
-Service layer package.
+"""Service layer: validation, inference, risk scoring and orchestration."""
