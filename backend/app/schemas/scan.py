@@ -144,6 +144,12 @@ class ScanResult(BaseModel):
     threat_intelligence: Optional[Dict[str, Any]] = None
     page_analysis: Optional[Dict[str, Any]] = None
 
+    #: Machine-readable reason for a ``failed`` scan (e.g. ``UNSUPPORTED_SCHEME``).
+    #: Always ``None`` for a completed scan.
+    error_code: Optional[str] = None
+    #: Human-readable explanation of a ``failed`` scan.
+    error_message: Optional[str] = None
+
     scanned_at: datetime
     duration_ms: Optional[int] = None
     limitations: List[str] = Field(default_factory=list)

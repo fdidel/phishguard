@@ -48,6 +48,27 @@ from phishguard.url_validation import UrlValidationError, validate_url
 
 logger = logging.getLogger(__name__)
 
+
+def _redact_userinfo(url: str) -> str:
+    """Return a copy of *url* with any embedded credentials removed.
+
+    The URL is parsed with :func:`urllib.parse.urlsplit` so that the
+    ``username:password@`` component is stripped while the rest of the URL
+    (scheme, host, port, path, query, fragment) is preserved.  This prevents
+    credentials from ever being persisted or exported.
+    """
+    from urllib.parse import urlsplit, urlunsplit
+
+    parts = urlsplit(url)
+    if parts.username is None and parts.password is None:
+        return url
+    # Rebuild netloc without userinfo
+    netloc = parts.hostname or ""
+    if parts.port is not None:
+        netloc = f"{netloc}:{parts.port}"
+    return urlunsplit((parts.scheme, netloc, parts.path, parts.query, parts.fragment))
+
+
 #: Limitations attached to every result so the UI can display them.
 DEFAULT_LIMITATIONS = [
     "This assessment is based on the structure of the URL and, where enabled, "
@@ -329,7 +350,7 @@ def perform_scan(
     duration = int((time.perf_counter() - started) * 1000)
     outcome = ScanOutcome(
         scan_id=str(uuid.uuid4()),
-        submitted_url=validated.original_input,
+        submitted_url=_redact_userinfo(validated.original_input),
         normalized_url=validated.normalized_url,
         hostname=validated.hostname,
         registrable_domain=validated.registrable_domain,

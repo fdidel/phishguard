@@ -111,4 +111,23 @@ describe('<ScanResultPanel />', () => {
     expect(screen.queryByRole('meter')).toBeNull();
     expect(screen.getByText('Not available')).toBeInTheDocument();
   });
+
+  it('renders the failure reason when a scan fails', () => {
+    render(<ScanResultPanel result={failedResult()} />);
+
+    // The failure reason block is shown only when error_code is present.
+    expect(screen.getByTestId('failure-reason')).toBeInTheDocument();
+    expect(screen.getByText('Why it failed')).toBeInTheDocument();
+    expect(screen.getByText('UNSUPPORTED_SCHEME')).toBeInTheDocument();
+
+    // The failure detail explains why the scan failed.
+    expect(screen.getByTestId('failure-detail')).toBeInTheDocument();
+    expect(screen.getByText(/only http and https URLs can be analysed/i)).toBeInTheDocument();
+  });
+
+  it('hides the failure reason when the scan did not fail', () => {
+    render(<ScanResultPanel result={dangerousResult()} />);
+    expect(screen.queryByTestId('failure-reason')).toBeNull();
+    expect(screen.queryByTestId('failure-detail')).toBeNull();
+  });
 });

@@ -539,10 +539,30 @@ def train(
     return metrics_payload
 
 
+def _calibrated_estimators(calibrated: CalibratedClassifierCV) -> List[object]:
+    """Return the fitted sub-estimators of a ``CalibratedClassifierCV``.
+
+    scikit-learn renamed the public attribute in 1.6: the fitted
+    ``_CalibratedClassifier`` wrappers now live in ``calibrated_classifiers_``,
+    while older releases exposed them as ``estimators_``.  Both are supported
+    so that the training pipeline stays reproducible across versions.
+    """
+    estimators = getattr(calibrated, "calibrated_classifiers_", None)
+    if not estimators:
+        estimators = getattr(calibrated, "estimators_", None)
+    return list(estimators or [])
+
+
 def _feature_importance(calibrated: CalibratedClassifierCV) -> List[Dict[str, object]]:
     """Extract global feature importance from the fitted pipeline(s)."""
     importances: Dict[str, float] = {}
-    estimators = getattr(calibrated, "estimators_", None) or []
+    estimators = _calibrated_estimators(calibrated)
+    if not estimators:  # pragma: no cover - defensive
+        print(
+            "[train] WARNING no fitted sub-estimators found on "
+            f"{type(calibrated).__name__}; feature importance is empty"
+        )
+        return []
     for calibrated_clf in estimators:
         pipeline = getattr(calibrated_clf, "estimator", calibrated_clf)
         inner = _inner_classifier(pipeline)

@@ -60,6 +60,9 @@ export function dangerousResult(overrides: Partial<ScanResult> = {}): ScanResult
     threat_intelligence: null,
     page_analysis: null,
 
+    error_code: null,
+    error_message: null,
+
     scanned_at: '2026-10-22T09:00:00Z',
     duration_ms: 12,
     limitations: ['The model only sees the structure of the address.'],
@@ -87,6 +90,8 @@ export function failedResult(overrides: Partial<ScanResult> = {}): ScanResult {
     model_version: null,
     feature_schema_version: null,
     model_algorithm: null,
+    error_code: 'UNSUPPORTED_SCHEME',
+    error_message: 'Only http and https URLs can be analysed (received \'ftp\').',
     duration_ms: 3,
     limitations: ['The address could not be analysed.'],
     ...overrides,

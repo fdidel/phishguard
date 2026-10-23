@@ -1211,7 +1211,183 @@
     "max_fpr_constraint": 0.05,
     "dangerous_max_fpr_constraint": 0.02
   },
-  "feature_importance": [],
+  "feature_importance": [
+    {
+      "feature": "uses_https",
+      "importance": 0.564814,
+      "relative_importance": 0.564814
+    },
+    {
+      "feature": "has_ip_address",
+      "importance": 0.105738,
+      "relative_importance": 0.105738
+    },
+    {
+      "feature": "suspicious_keyword_count",
+      "importance": 0.098906,
+      "relative_importance": 0.098906
+    },
+    {
+      "feature": "brand_mismatch_count",
+      "importance": 0.041595,
+      "relative_importance": 0.041595
+    },
+    {
+      "feature": "hostname_digit_count",
+      "importance": 0.026192,
+      "relative_importance": 0.026192
+    },
+    {
+      "feature": "has_at_symbol",
+      "importance": 0.012999,
+      "relative_importance": 0.012999
+    },
+    {
+      "feature": "risky_tld",
+      "importance": 0.012927,
+      "relative_importance": 0.012927
+    },
+    {
+      "feature": "has_double_slash_in_path",
+      "importance": 0.012788,
+      "relative_importance": 0.012788
+    },
+    {
+      "feature": "known_shortener",
+      "importance": 0.012692,
+      "relative_importance": 0.012692
+    },
+    {
+      "feature": "num_digits_total",
+      "importance": 0.012263,
+      "relative_importance": 0.012263
+    },
+    {
+      "feature": "num_dots_total",
+      "importance": 0.009732,
+      "relative_importance": 0.009732
+    },
+    {
+      "feature": "num_subdomains",
+      "importance": 0.009262,
+      "relative_importance": 0.009262
+    },
+    {
+      "feature": "max_token_length",
+      "importance": 0.00782,
+      "relative_importance": 0.00782
+    },
+    {
+      "feature": "num_tilde_total",
+      "importance": 0.006068,
+      "relative_importance": 0.006068
+    },
+    {
+      "feature": "hostname_length",
+      "importance": 0.005049,
+      "relative_importance": 0.005049
+    },
+    {
+      "feature": "path_depth_ratio",
+      "importance": 0.004896,
+      "relative_importance": 0.004896
+    },
+    {
+      "feature": "path_length",
+      "importance": 0.004705,
+      "relative_importance": 0.004705
+    },
+    {
+      "feature": "hostname_entropy",
+      "importance": 0.004321,
+      "relative_importance": 0.004321
+    },
+    {
+      "feature": "num_hyphens_hostname",
+      "importance": 0.004269,
+      "relative_importance": 0.004269
+    },
+    {
+      "feature": "hostname_token_count",
+      "importance": 0.004248,
+      "relative_importance": 0.004248
+    },
+    {
+      "feature": "avg_hostname_token_length",
+      "importance": 0.003798,
+      "relative_importance": 0.003798
+    },
+    {
+      "feature": "has_port",
+      "importance": 0.003645,
+      "relative_importance": 0.003645
+    },
+    {
+      "feature": "query_length",
+      "importance": 0.003417,
+      "relative_importance": 0.003417
+    },
+    {
+      "feature": "num_query_params",
+      "importance": 0.003412,
+      "relative_importance": 0.003412
+    },
+    {
+      "feature": "url_length",
+      "importance": 0.003358,
+      "relative_importance": 0.003358
+    },
+    {
+      "feature": "url_entropy",
+      "importance": 0.003346,
+      "relative_importance": 0.003346
+    },
+    {
+      "feature": "has_percent_encoding",
+      "importance": 0.003323,
+      "relative_importance": 0.003323
+    },
+    {
+      "feature": "digit_ratio_total",
+      "importance": 0.003156,
+      "relative_importance": 0.003156
+    },
+    {
+      "feature": "path_depth",
+      "importance": 0.002575,
+      "relative_importance": 0.002575
+    },
+    {
+      "feature": "num_underscores_total",
+      "importance": 0.002398,
+      "relative_importance": 0.002398
+    },
+    {
+      "feature": "num_special_chars_total",
+      "importance": 0.002357,
+      "relative_importance": 0.002357
+    },
+    {
+      "feature": "punycode_hostname",
+      "importance": 0.002118,
+      "relative_importance": 0.002118
+    },
+    {
+      "feature": "special_char_ratio_total",
+      "importance": 0.001812,
+      "relative_importance": 0.001812
+    },
+    {
+      "feature": "has_ipv6_address",
+      "importance": 0.0,
+      "relative_importance": 0.0
+    },
+    {
+      "feature": "scheme_inferred",
+      "importance": 0.0,
+      "relative_importance": 0.0
+    }
+  ],
   "limitations": [
     "The dataset is historical and static; phishing campaigns change over time, so measured performance does not guarantee performance against future campaigns.",
     "The model only observes lexical properties of the URL. A URL with an entirely ordinary structure can still host a convincing phishing page.",

@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=sqlite:///./phishguard.db
+      - MODEL_PATH=/app/ml/artifacts/phishguard_model.joblib
+      - METRICS_PATH=/app/ml/artifacts/model_metrics.json
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    depends_on:
+      - api
+    restart: unless-stopped

@@ -67,6 +67,11 @@ export interface ScanResult {
   threat_intelligence: Record<string, unknown> | null;
   page_analysis: Record<string, unknown> | null;
 
+  /** Machine-readable failure reason; null unless the scan failed. */
+  error_code: string | null | undefined;
+  /** Human-readable failure reason; null unless the scan failed. */
+  error_message: string | null | undefined;
+
   scanned_at: string;
   duration_ms: number | null;
   limitations: string[];

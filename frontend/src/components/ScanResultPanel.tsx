@@ -107,6 +107,19 @@ export default function ScanResultPanel({ result }: ScanResultPanelProps) {
             </p>
           </div>
         ) : null}
+        {isFailed && result.error_code ? (
+          <div className="result__meta" data-testid="failure-reason">
+            <h3 className="result__label">Why it failed</h3>
+            <p className="result__sub">
+              Reason: <code>{result.error_code}</code>
+            </p>
+            {result.error_message ? (
+              <p className="result__sub" data-testid="failure-detail">
+                {result.error_message}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </div>
 
       {/* 3. Risk score */}

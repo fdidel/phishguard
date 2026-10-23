@@ -179,12 +179,16 @@ def feature_importance_for_prediction(
         value = features.get(name, 0.0)
         imp = importance_map.get(name, 0.0)
         if value != 0 and imp > 0:
+            # The reported value is rounded first so that a client can
+            # reproduce the contribution as ``value * global_importance``.
+            rounded_value = round(float(value), 4)
+            rounded_importance = round(float(imp), 6)
             contributing.append(
                 {
                     "feature": name,
-                    "value": round(float(value), 4),
-                    "global_importance": round(float(imp), 6),
-                    "contribution": round(float(value) * float(imp), 6),
+                    "value": rounded_value,
+                    "global_importance": rounded_importance,
+                    "contribution": round(rounded_value * rounded_importance, 6),
                 }
             )
     contributing.sort(key=lambda row: row["contribution"], reverse=True)
