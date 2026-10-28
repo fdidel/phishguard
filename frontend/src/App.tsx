@@ -119,10 +119,23 @@ export default function App() {
       </main>
 
       <footer className="app__footer">
-        <p>
-          PhishGuard produces a risk <em>indicator</em> based on the structure of an address. It
-          is not a guarantee that a website is safe, and it does not replace your own judgement.
-        </p>
+        <div className="footer__content">
+          <img
+            className="footer__logo"
+            src="/assets/nasarawa-state-university-logo.png"
+            alt="Nasarawa State University, Keffi"
+          />
+          <div className="footer__text">
+            <p>
+              PhishGuard produces a risk <em>indicator</em> based on the structure of an address. It
+              is not a guarantee that a website is safe, and it does not replace your own judgement.
+            </p>
+            <p className="footer__attribution">
+              Developed by <strong>Didel Oluwafemi</strong> &nbsp;|&nbsp;
+              BSc Computer Science Project &mdash; Nasarawa State University, Keffi
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
