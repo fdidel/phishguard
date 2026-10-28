@@ -122,7 +122,7 @@ export default function App() {
         <div className="footer__content">
           <img
             className="footer__logo"
-            src="/assets/nasarawa-state-university-logo.png"
+            src="/nsuk-logo.png"
             alt="Nasarawa State University, Keffi"
           />
           <div className="footer__text">
